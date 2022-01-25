@@ -1,0 +1,28 @@
+[Unit]
+Description=X11 Session for root
+After=graphical.target systemd-user-sessions.service
+
+[Service]
+User=root
+WorkingDirectory=/root
+PAMName=login
+Environment=XDG_SESSION_TYPE=x11
+
+TTYPath=/dev/tty8
+StandardInput=tty
+UnsetEnvironment=TERM
+
+UtmpIdentifier=tty8
+UtmpMode=user
+
+Type=simple
+StandardOutput=journal
+#Wait 1s before starting X. Sometimes the dri driver is not fully loaded and Xorg start with a wrong resolution
+ExecStartPre=/usr/bin/sleep 1
+ExecStartPre=/usr/bin/chvt 8
+ExecStart=/usr/bin/startx -- vt8 -keeptty -verbose 3 -logfile /dev/null -nocursor
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=graphical.target
