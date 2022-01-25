@@ -1,6 +1,6 @@
 [Unit]
 Description=X11 Session for root
-After=graphical.target systemd-user-sessions.service
+After=systemd-user-sessions.service
 
 [Service]
 User=root
